@@ -12,12 +12,8 @@ def home(request):
     init_printing()
     if request.POST:
         data = request.POST.get('expressao')
-        print(request.POST)
         if request.POST.get('inlineRadioOptions') == 'derivada':
-            try:
                 return derivada(data, request)
-            except:
-                return render(request, 'derivada.html', {'erro': True})
         elif request.POST.get('inlineRadioOptions') == 'integral':
             try:
                 return integral(data, request)
@@ -31,15 +27,33 @@ def home(request):
 
 
 def derivada(data, request):
-    f = Lambda(x, data)
-    derivada = diff(f(x), x)
-    graph = image(f(x))
+    try:
+        derivate = data.split('=')
+        print(derivate)
+        f = Lambda(x, derivate[0].strip())
+        x0 = float(derivate[1].strip())
+        print(derivate[1])
+        fl = Lambda(x, diff(f(x), x))
+        r = Lambda(x, fl(x0) * (x - x0) + f(x0))
+        p = plot(f(x), (x, -2, 2), line_color='green', show=False)
+        q = plot(r(x), (x, -1.5, 1), line_color='red', show=False)
+        p.extend(q)
+        image = plot(f, line_color='green', show=False)
+        buf = io.BytesIO()
+        p.save(buf)
+        buf.seek(0)
+        string = base64.b64encode(buf.read())
+        graph = urllib.parse.quote(string)
+    except:
+        derivate = data
+        f = Lambda(x, derivate)
+    deriv = diff(f(x), x)
     uri = {
         'expressao': pretty(f.expr),
         'expressao_escrita': f.expr,
-        'image': graph,
-        'derivada': pretty(derivada),
-        'derivada_escrita': derivada,
+        'image': graph or image(f(x)),
+        'derivada': pretty(deriv),
+        'derivada_escrita': deriv,
         'erro': False
     }
     return render(request, 'derivada.html', {'data': uri})
