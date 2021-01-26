@@ -1,10 +1,37 @@
 {% extends 'index.html' %}
 {% block content %}
+
     <form action="{% url 'expressao' %}" method="POST">
-    {% csrf_token %}
-        <label>
-            <input name="expressao" type="text">
-        </label>
-    <button type="submit">Enviar</button>
+
+        <div class="form-group">
+            {% csrf_token %}
+            <label>
+                Digite sua expressão
+                <input name="expressao" type="text" class="form-control" required>
+            </label>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+
+        <small class="form-text text-muted">
+            Regras: Para ℯ use 'exp', elevação use '**' e variavel com incognita 2x use '2*x'<br>
+            sen = sin, tang = tg e cos = cos<br>
+            raiz quadrada use sqrt()
+        <br>
+            Limite: Use 'x -> 0' para definir ponto. 'x -> 0 = x**x e infinito como 'oo'
+        </small>
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="derivada" value="derivada">
+                <label class="form-check-label" for="derivada">Derivada</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="limite">
+                <label class="form-check-label" for="inlineRadio2">Limite</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="integral">
+                <label class="form-check-label" for="inlineRadio2">Integral</label>
+            </div>
+        </div>
     </form>
 {% endblock %}

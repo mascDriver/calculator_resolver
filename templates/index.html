@@ -1,13 +1,53 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!doctype html>
+<html lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <title>matplot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Calculator</title>
 </head>
 <body>
-{% block content %}
-{% endblock %}
-<pre>{{ data.derivada }}</pre>
-<img src="data:image/png;base64,{{ data.image }}" alt="" height="250" ,width="250">
+<div class="container text-center" style="padding-top: 15%">
+    <div class="align-self-center">
+        <div class="row">
+            <div class="col-12">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        {% if erro %}
+            <div class="alert alert-danger" role="alert">
+                Ocorreu um erro<br>
+                {{ motivo }}
+            </div>
+        {% else %}
+            {% if data %}
+                <div class="row">
+                    <div class="col-12">
+                        Expressão original
+                        <div class="bg-dark text-white">
+                            <pre>{{ data.expressao }}</pre>
+                            <pre>{{ data.expressao_escrita }}</pre>
+                        </div>
+                        Resultado
+                        <div class="bg-success">
+                            <pre>{{ data.derivada }}</pre>
+                            <pre>{{ data.derivada_escrita }}</pre>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <img src="data:image/png;base64,{{ data.image }}" alt="">
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
 </body>
 </html>
