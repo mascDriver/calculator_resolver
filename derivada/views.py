@@ -27,6 +27,7 @@ def home(request):
 
 
 def derivada(data, request):
+    graph = None
     try:
         derivate = data.split('=')
         print(derivate)
@@ -38,7 +39,6 @@ def derivada(data, request):
         p = plot(f(x), (x, -2, 2), line_color='green', show=False)
         q = plot(r(x), (x, -1.5, 1), line_color='red', show=False)
         p.extend(q)
-        image = plot(f, line_color='green', show=False)
         buf = io.BytesIO()
         p.save(buf)
         buf.seek(0)
@@ -63,11 +63,10 @@ def limite(data, request):
     ponto = data.split('->')
     expressao = ponto[1].split('=')
     lim = Limit(expressao[1].strip(), ponto[0].strip(), expressao[0].strip())
-    lim_img = limit(expressao[1].strip(), ponto[0].strip(), expressao[0].strip())
     uri = {
         'expressao': pretty(lim),
         'expressao_escrita': lim,
-        'image': image(expressao[1].strip()),
+        'image': image(lim.doit()),
         'derivada_escrita': lim.doit(),
         'erro': False
     }
